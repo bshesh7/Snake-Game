@@ -55,23 +55,25 @@ function drawApple(x,y){
     _context.strokeRect(x*snake_w,y*snake_h,snake_w, snake_h)
     
 }
-
+var snakeX;
+var snakeY;
 function draw(){
-    _context.clearRect(0,0,_canvas.width,_canvas.height)    
+    _context.clearRect(0,0,500,500)    
+    
     for(i=0;i<len;i++){
     var X = snake[i].x;
     var Y = snake[i].y;
-    drawSnake(X,Y)
+    drawSnake(X,Y);
+    }
 
-}
+    snakeX = snake[0].x;
+    snakeY = snake[0].y;
 
-drawApple(apple.x,apple.y);
-
-//snake head
-snakeX = snake[0].x;
-snakeY = snake[0].y;
-
-
+    drawApple(apple.x,apple.y);
+    if(snakeX < 0 || snakeY < 0 || snakeX >= 50 || snakeY >= 50){
+        alert("Game over");
+    }
+    
 
 
 
@@ -90,16 +92,44 @@ else if(dir=="down"){
     snakeY++
 }
 
-snake.pop();
-// new head
-var newHead = {
-    x: snakeX,
-    y: snakeY
+
+// In case of eathing apple
+if(apple.x==snakeX && apple.y == snakeY){
+    
+    apple = {
+        x:Math.floor(Math.random() * 49) + 1,
+        y:Math.floor(Math.random() * 49) + 1    
+    }
+    drawApple(apple.x,apple.y);
+    var newHead = {
+        x: snakeX,
+        y: snakeY
+    }
+    len++
+    for(var j = 0 ; j>=len; j++){
+        if(snakeX==snake[j].x && snakeY==snake[j].y){
+            alert("Gameover");
+        }
+    }
 }
+    else{
+        snake.pop();
+        newHead = {
+            x: snakeX,
+            y: snakeY
+        }
+        
+    }
+
+// new head
+
 
 snake.unshift(newHead);
+for(var j = 0 ; j>=len; j++){
+    if(snakeX==snake[j].x && snakeY==snake[j].y){
+        alert("Gameover");
+    }
 }
+}
+
 setInterval(draw,100);
-
-
-    
